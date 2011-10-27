@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'rubygems'
 require 'rest_client'
 
 
@@ -14,6 +15,7 @@ class Ticker
   end
 
   def ticker()
+  
     loop do
       sleep(@minutes*60)
       checkSite()
@@ -21,8 +23,16 @@ class Ticker
   end
 
   def check_site()
-    doc = NokoGiri::HTML(RestClient.get(url))
-    #Parse doc for new posts in thread or for a new page 
+    doc = Nokogiri::HTML(RestClient.get("http://forum.bodybuilding.com/showthread.php?t=139217483"))
+	puts doc 
   end
 end
+
+def test
+  ticker = Ticker.new(1, "lol")
+  ticker.check_site
+  puts "testing"
+end
+
+test
 			 
