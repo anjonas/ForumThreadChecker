@@ -1,35 +1,24 @@
-require 'nokogiri'
-require 'open-uri'
-
+require "nokogiri"
+require "rest-client"
 
 class Ticker
-	 def initialize(minutes, url)
-	 	@minutes = minutes
-	  	@url = url
-	 end
-	
-	
-	def startTicker()
-		ticker()
-	end
+  def initialize(minutes, url)
+    @minutes = minutes
+    @url = url
+  end
 
-	def ticker()
-		loop do
-			startTime =  Time.now
-			currentTime = Time.now
+  def start_ticker
+    ticker
+  end
 
-			while (currentTime - startTime) < minutes do
-				currentTime = Time.now
-			end
+  def ticker
+    loop do
+      sleep(@minutes * 60)
+      check_site
+    end
+  end
 
-			checkSite()
-		end
-	end
-
-	def checkSite()
-		doc = NokoGiri::HTML(open(url))
-		#Parse doc for new posts in thread or for a new page 
-	end
-end		
-
-			 
+  def check_site
+    doc = Nokogiri::HTML(RestClient.get(url))
+  end
+end
