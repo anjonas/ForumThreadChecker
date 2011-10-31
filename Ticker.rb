@@ -48,6 +48,7 @@ end
 def test
   ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139153723")
   ticker.check_site
+  ticker.check_site
 end
 
 test
