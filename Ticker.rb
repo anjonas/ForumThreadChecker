@@ -29,7 +29,7 @@ class Ticker
 	
 	link = doc.css('span/a[@class = "popupctrl"]') #.each do |link|
 	  page =  link.text.scan /[-+]?\d*\.?\d+/
-	  if ((@url + "&" + page[1]) != @url)
+	  if ((@url + "&page=" + page[1]) != @url)
 	    @url = @url + "&page=" + page[1]
 		puts "url changed"
 	  end
