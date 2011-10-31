@@ -16,10 +16,19 @@ class Ticker
   end
 
   def ticker()
-  
+    posts_then = 0
     loop do
-      sleep(@minutes*60)
-      checkSite()
+	  puts "tick"
+      check_site() {|posts_now, new_page|
+	    if new_page != 0
+		  puts "New posts in thread, and a new page"
+		  posts_then = posts_now
+	       elsif posts_now != posts_then
+	         puts "New posts in thread"
+	         posts_then = posts_now
+		end
+	  }
+	  sleep(@minutes*60)
     end
   end
 
@@ -28,26 +37,27 @@ class Ticker
 	last_page = 0
     doc = Nokogiri::HTML(RestClient.get(@url))
 	
-	link = doc.css('span/a[@class = "popupctrl"]') #.each do |link|
+	link = doc.css('span/a[@class = "popupctrl"]')
 	  page =  link.text.scan /[-+]?\d*\.?\d+/
-	  if ((@base_url + "&page=" + page[1]) != @url)
-	    @url = @base_url + "&page=" + page[1]
-		puts "url changed"
+	  if page != []
+	    if ((@base_url + "&page=" + page[1]) != @url)
+	      @url = @base_url + "&page=" + page[1]
+		  puts "New Page in Thread"
+		  yield(count, 1)
+	    end
 	  end
-	
 	doc.css('a.postcounter').each do |node|
 	  count = count + 1
 	end
-	puts count
+	yield(count, 0)
 	
   end
   
 end
 
 def test
-  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139153723")
-  ticker.check_site
-  ticker.check_site
+  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139319453")
+  ticker.start_ticker
 end
 
 test
