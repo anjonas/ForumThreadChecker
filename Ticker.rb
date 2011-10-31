@@ -34,8 +34,6 @@ class Ticker
 	    @url = @base_url + "&page=" + page[1]
 		puts "url changed"
 	  end
-	  puts @url
-	
 	
 	doc.css('a.postcounter').each do |node|
 	  count = count + 1
