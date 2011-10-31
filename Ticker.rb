@@ -4,9 +4,10 @@ require 'rest_client'
 
 
 class Ticker
-  def initialize(minutes, url)
+  def initialize(minutes, base_url)
     @minutes = minutes
-    @url = url
+    @base_url = base_url
+	@url = base_url
   end
 	
 	
@@ -29,8 +30,8 @@ class Ticker
 	
 	link = doc.css('span/a[@class = "popupctrl"]') #.each do |link|
 	  page =  link.text.scan /[-+]?\d*\.?\d+/
-	  if ((@url + "&page=" + page[1]) != @url)
-	    @url = @url + "&page=" + page[1]
+	  if ((@base_url + "&page=" + page[1]) != @url)
+	    @url = @base_url + "&page=" + page[1]
 		puts "url changed"
 	  end
 	  puts @url
