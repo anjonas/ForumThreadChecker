@@ -23,9 +23,9 @@ class Ticker
 	    if new_page != 0
 		  puts "New posts in thread, and a new page"
 		  posts_then = posts_now
-	       elsif posts_now != posts_then
-	         puts "New posts in thread"
-	         posts_then = posts_now
+	      elsif posts_now != posts_then
+	        puts "New posts in thread"
+	        posts_then = posts_now
 		end
 	  }
 	  sleep(@minutes*60)
@@ -43,20 +43,20 @@ class Ticker
 	    if ((@base_url + "&page=" + page[1]) != @url)
 	      @url = @base_url + "&page=" + page[1]
 		  puts "New Page in Thread"
-		  yield(count, 1)
+		  last_page = 1
 	    end
 	  end
 	doc.css('a.postcounter').each do |node|
 	  count = count + 1
 	end
-	yield(count, 0)
+	yield(count, last_page)
 	
   end
   
 end
 
 def test
-  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139319453")
+  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139393373")
   ticker.start_ticker
 end
 
