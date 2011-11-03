@@ -1,3 +1,13 @@
+Shoes.setup do
+  $:.unshift "C:/Ruby/ForumThreadChecker"
+  gem 'nokogiri'
+  gem 'RestClient'
+end
+require 'Ticker.rb'
+require 'nokogiri'
+require 'rest_client'
+
+
 Shoes.app do
   class Actions
     @myApp
@@ -22,10 +32,10 @@ Shoes.app do
   
   stack do
     @myActions = Actions.new(self)
-    url = edit_line
+    thread_url = edit_line
 	
 	button "Start ThreadChecker" do
-	  @myActions.startChecker(url.text)
+	  @myActions.startChecker(thread_url.text)
 	end
   end
 end
