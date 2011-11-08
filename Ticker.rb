@@ -2,6 +2,8 @@ require 'nokogiri'
 require 'rubygems'
 require 'rest_client'
 require 'ruby_gntp'
+require_relative 'C:\Ruby\ForumThreadChecker\Notify.rb'
+
 
 
 class Ticker
@@ -9,11 +11,7 @@ class Ticker
     @minutes = minutes
     @base_url = base_url
 	@url = base_url
-	@growl = GNTP.new("ForumThreadChecker")
-    @growl.register({:notifications => [{
-    :name     => "notify",
-    :enabled  => true,
-    }]})
+    @note = Notify.new()
   end
 	
 	
@@ -26,22 +24,10 @@ class Ticker
     loop do
       check_site() {|posts_now, new_page|
 	    if new_page != 0
-		  @growl.notify({
-            :name  => "notify",
-            :title => "New Posts",
-            :text  => "New Page and new posts in thread",
-            :icon  => "http://www.hatena.ne.jp/users/sn/snaka72/profile.gif&quot;",
-            :sticky=> true,
-          })
+		  @note.send_message("New Page and new posts in Thread")
 		  posts_then = 1
 	      elsif posts_now != posts_then
-	        @growl.notify({
-              :name  => "notify",
-              :title => "New Posts",
-              :text  => "New posts in thread",
-              :icon  => "http://www.hatena.ne.jp/users/sn/snaka72/profile.gif&quot;",
-              :sticky=> true,
-            })
+	        @note.send_message("New posts in Thread")
 	        posts_then = posts_now
 		end
 	  }
@@ -72,7 +58,7 @@ class Ticker
 end
 
 def test
-  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139374723")
+  ticker = Ticker.new(1, "http://forum.bodybuilding.com/showthread.php?t=139437963&page=1")
   ticker.start_ticker
 end
 
